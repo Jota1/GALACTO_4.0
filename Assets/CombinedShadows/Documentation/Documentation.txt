@@ -1,0 +1,28 @@
+CombinedShadows
+
+This pack can improve your game's performance by rendering shadows with up to 1000 less drawcalls ( PC/UWP 1000x, Mobile 200x). Depending on your scene's complexity this will dramatically reduce drawcalls and heavily improve performance on platforms that are drawcall limited ( mobile or UWP/xbox ). If you are GPU bound, it probably won't help you as the load on the GPU will be slightly higher. Unfortunately this pack doesn't work with skinned meshes and particles.
+
+
+Documentation:
+This pack works as follows :
+When the component CombinedShadows is put into a new scene, it will gather all objects on start (except skinned meshes) and create a combined mesh for solid objects and one for alpha tested objects (like tree leaves). This combined meshes will render as "ShadowsOnly" while the original objects will have shadow casting turned to off so they will not be rendered into the shadow pass individually. This reduces drawcalls significantly because now you will only have 1 drawcall for each shadow pass ( limited by 1022 objects for D3D or 200 for GLES in a draw or 16 bit indices meshes). This combined mesh will also have a special shader on it that can inherit the transformation of the original object, That is to say, if the original object moves/rotates/scales, its shadow does the same as they are in sync. The plugin also tracks wether an object is visible or not and hides the shadow if the original object is hidden or destroyed; however, if initially you have 100 objects and you delete 90, the mesh rendered for shadows will consume the memory of the original 100 objects, so if you wish to be memory savy you will have to disable/reenable the CombinedShadows component at intervals defined by you. The process takes 1-2s even on high end PC hardware so this moment in time must be chosen by you (like for example on level loading). Subsequent objects added into the scene after the CombinedShadows component has initialized will not benefit from this optimization but will work as intended.
+
+AlphaTested Objects:
+For trees and similar things there is also a path where it merges all tree objects, but in order for trees to appear as alpha tested planes you need a texture. Currently this pack provides only a believable prototype for these
+In order to provide the best efficiency a texture is chosen from the first object in the list and it's last texture. In the tests I've done this is the leaves texture. It only uses one leave texture for all combined tree shadows, so it's not a one to one representation.
+
+If they annoy you, you can turn them off completely by commenting out the line :
+
+CombineObjects( alphaTestedObjectsList, false, null, true );
+
+ObjectLists:
+
+In order to provide better granularity for programmers, you can also specify which objects are combined by manually adding objects into solidObjectsList in the editor. If you want to extend this feature even further you can create multiple lists of objects. Additionally, objects which are entirely static do not need the transform to be updated so the reference to CombinedMeshPart from CombinedMesh.partArray can be removed in order to reduce even more CPU cycles.
+
+Issues:
+- does not work with objects marked as static, the code will just skip static objects right now
+- if you duplicate an object through Instantiate that has been in the combine process, do not forget to turn the cast shadows to on on the copy and remove the "CombinedMeshPart" component of the copy;
+- if you remove objects that have been combined, their shadow will not be rendered anymore but the memory associated with the mesh is still consumed (there is also a bit of extra vertex processing since the combined mesh vertex count remains the same )
+- if you stream assets somehow and want the whole mesh regenerated, just disable and reenable the CombinedShadows component (this takes a few seconds though)
+- does not work with d3d11_9x targets / Windows Phone
+- does not work on Adreno GPUS under OpenGL, but does work with Vulkan
