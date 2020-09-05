@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader Graphs_Vertex Animator 2
+  m_Shader: {fileID: -6465566751694194690, guid: 3d3cf57aa123ebf4da05864d0daf4012,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap:
+    MotionVector: User
+  disabledShaderPasses:
+  - MOTIONVECTORS
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - Vector1_19235F3F: 0.01
+    - Vector1_37A56423: 1.73
+    - Vector1_75B349BF: 3.66
+    - Vector1_8606EB13: 5.3
+    - Vector1_870EC477: 5
+    - Vector1_96C747D9: 3.44
+    - Vector1_A2763EAA: 5
+    - Vector1_C9470480: 1.07
+    - Vector1_D5ADFC44: -0.49
+    - Vector1_E7BABCD6: 5
+    - Vector1_F2B1C07B: 0.095
+    m_Colors:
+    - Color_F86698F9: {r: 0.70461017, g: 0.72678363, b: 0.735849, a: 1}
+    - Vector3_EE426BF3: {r: 0.001, g: 0, b: 0, a: 0}
